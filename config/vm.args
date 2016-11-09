@@ -1,6 +1,11 @@
--sname tictactoerl
+# only show the programmed prompt
+-noshell
 
--setcookie tictactoerl_cookie
+# for remote access & debugging
+-name tictactoerl@127.0.0.1
+
+# not needed
+-smp disable
 
 +K true
 +A30
