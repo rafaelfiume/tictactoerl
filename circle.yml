@@ -1,0 +1,19 @@
+machine:
+  environment:
+    PATH: ${HOME}/otp_src_18.0/bin:${PATH}
+
+general:
+  artifacts:
+    - ".eunit/"
+
+dependencies:
+  cache_directories:
+    - "~/otp_src_18.0"
+  pre:
+    - if [ ! -d ~/otp_src_18.0 ]; then wget http://www.erlang.org/download/otp_src_18.0.tar.gz; tar zxvf otp_src_18.0.tar.gz -C $HOME; cd ~/otp_src_18.0 && ./configure && make && sudo make install; fi
+    - if [ ! -f ~/otp_src_18.0/bin/rebar3 ]; then git clone git://github.com/erlang/rebar3.git; cd rebar3 && ./bootstrap; cp rebar3 ~/otp_src_18.0/bin/rebar3; fi
+    - rebar3 compile
+
+test:
+  override:
+    - rebar3 ct
