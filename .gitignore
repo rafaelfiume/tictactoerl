@@ -1,4 +1,7 @@
 .rebar3
+rebar3.*
+rebar.*
+.rebar
 _*
 .eunit
 *.o
@@ -10,7 +13,6 @@ _*
 ebin
 log
 erl_crash.dump
-.rebar
 logs
 _build
 .idea

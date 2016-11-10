@@ -7,7 +7,7 @@ all() ->
 
 init_per_testcase(demo_session, Config) ->
     mock_io(),
-    {ok, Pid} = tictactoerl:start_link(), %% not there yet
+    {ok, Pid} = tictactoerl_fsm:start_link(),
     [{pid, Pid} | Config].
 
 end_per_testcase(_, Config) ->
@@ -19,7 +19,7 @@ end_per_testcase(_, Config) ->
 
 mock_io() ->
     Parent = self(),
-    code:unstick_dir(filename:dir(code:where_is_file("io.beam"))),
+    code:unstick_dir(filename:dirname(code:where_is_file("io.beam"))),
     meck:new(io, [passthrough, no_link]),
     meck:expect(io, format, fun (Str) ->
         Parent ! {out, Str},
@@ -46,8 +46,9 @@ wait_for_death(Pid) ->
 %%% TEST CASES %%%
 %%%%%%%%%%%%%%%%%%
 
-demo_session() ->
-    ok.
+demo_session(_Config) ->
+    %%Pid = ?config(pid, Config),
+    out("Game Board Creation...").
 
 %%%%%%%%%%%%%%%
 %%% HELPERS %%%
