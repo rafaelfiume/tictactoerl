@@ -1,19 +1,28 @@
 machine:
   environment:
-    PATH: ${HOME}/otp_src_18.0/bin:${PATH}
+    PATH: ${HOME}/otp_src_19.1/bin:${HOME}/otp_src_19.1/erts:${PATH}
 
 general:
   artifacts:
     - ".eunit/"
 
+## Customized dependencies
 dependencies:
   cache_directories:
-    - "~/otp_src_18.0"
+    - "~/otp_src_19.1"
   pre:
-    - if [ ! -d ~/otp_src_18.0 ]; then wget http://www.erlang.org/download/otp_src_18.0.tar.gz; tar zxvf otp_src_18.0.tar.gz -C $HOME; cd ~/otp_src_18.0 && ./configure && make && sudo make install; fi
-    - if [ ! -f ~/otp_src_18.0/bin/rebar3 ]; then git clone git://github.com/erlang/rebar3.git; cd rebar3 && ./bootstrap; cp rebar3 ~/otp_src_18.0/bin/rebar3; fi
-    - rebar3 compile
+    - if [ ! -d ~/otp_src_19.1 ]; then wget http://www.erlang.org/download/otp_src_19.1.tar.gz; tar zxvf otp_src_19.1.tar.gz -C $HOME; cd ~/otp_src_19.1 && ./configure && make && sudo make install; fi
+    - if [ ! -f ~/otp_src_19.1/bin/rebar3 ]; then git clone git://github.com/erlang/rebar3.git; cd rebar3 && ./bootstrap; cp rebar3 ~/otp_src_19.1/bin/rebar3; fi
+    - rebar3 update 
 
 test:
   override:
+    - rebar3 compile
+    # Run acceptance tests
     - rebar3 ct
+    ##- rebar3 dialyzer##
+    - rebar3 release
+    # copy the build outputs to artifacts
+    - cp -r _build/default/rel/tictactoerl/bin/tictactoerl $CIRCLE_ARTIFACTS
+    # copy the test results to the test results directory.
+    - cp -r _build/test/logs/* $CIRCLE_TEST_REPORTS
