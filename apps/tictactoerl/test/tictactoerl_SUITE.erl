@@ -64,7 +64,7 @@ in(Input) ->
     receive
         {in, Pid} -> Pid ! {self(), Input}
     after 1000 ->
-        ct:pal("MBOX: ~s", [process_info(self(), messages)]),
+        ct:pal("MBOX: ~p", [process_info(self(), messages)]),
         error({too_long, {in, Input}})
     end.
 
@@ -76,6 +76,6 @@ out(Expected) ->
             true = string:equal(Expected, Prompt)
 
     after 1000 ->
-        ct:pal("MBOX: ~s", [process_info(self(), messages)]),
+        ct:pal("MBOX: ~p", [process_info(self(), messages)]),
         error({too_long, {out, Expected}})
     end.
