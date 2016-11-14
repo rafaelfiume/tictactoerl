@@ -6,7 +6,7 @@ general:
   artifacts:
     - ".eunit/"
 
-## Customized dependencies
+## customized dependencies
 dependencies:
   cache_directories:
     - "~/otp_src_19.1"
@@ -18,9 +18,10 @@ dependencies:
 test:
   override:
     - rebar3 compile
-    # Run acceptance tests
+    # run acceptance tests
     - rebar3 ct
     ##- rebar3 dialyzer##
+    # generates artifact
     - rebar3 release
     # copy the build outputs to artifacts
     - cp -r _build/default/rel/tictactoerl/bin/tictactoerl $CIRCLE_ARTIFACTS

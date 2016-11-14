@@ -8,3 +8,18 @@ Heavilly inspered on https://howistart.org/posts/erlang/1
     λ → rebar3 ct
     λ → rebar3 dialyzer
     λ → ./_build/default/rel/tictactoerl/bin/tictactoerl
+
+## TODO List
+
+* ~~Board creation~~
+* Player wins with vertical line
+* Player wins with horizontal line
+* Player wins with diagonal line
+* Game with diagonal line
+* Play the game in BOT mode
+* Validate user input
+* Implement GUI
+* Play against computer AI
+* Play online against remote opponent
+* App runs with a double click
+* Provide an installer for the app

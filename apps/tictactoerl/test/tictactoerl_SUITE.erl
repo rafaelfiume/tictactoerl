@@ -26,7 +26,7 @@ mock_io() ->
         ok
     end),
     meck:expect(io, format, fun (Str, Args) ->
-        Parent ! {out, io_lib:format(Str, Args)}
+        Parent ! {out, lists:flatten(io_lib:format(Str, Args))}
     end),
     meck:expect(io, get_line, fun (_Prompt) ->
         Parent ! {in, self()},
@@ -47,8 +47,14 @@ wait_for_death(Pid) ->
 %%%%%%%%%%%%%%%%%%
 
 demo_session(_Config) ->
-    %%Pid = ?config(pid, Config),
-    out("Game Board Creation...").
+    out("Game Board Creation...\n"),
+    out("   |   |   ~n"
+        "---+---+---~n"
+        "   |   |   ~n"
+        "---+---+---~n"
+        "   |   |   ~n"),
+    out("The game will start with Player X~n"
+        "Choose position:").
 
 %%%%%%%%%%%%%%%
 %%% HELPERS %%%
@@ -66,8 +72,9 @@ in(Input) ->
 out(Expected) ->
     receive
         {out, Prompt} ->
-            ct:pal("Expected: ~p~nPrompt: ~p", [Expected, Prompt]),
-            {match, _} = re:run(Prompt, Expected, [dotall, caseless, global])
+            ct:pal("Expected: ~p~nPrompt  : ~p", [Expected, Prompt]),
+            true = string:equal(Expected, Prompt)
+
     after 1000 ->
         ct:pal("MBOX: ~p", [process_info(self(), messages)]),
         error({too_long, {out, Expected}})

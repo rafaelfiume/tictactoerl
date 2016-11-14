@@ -7,7 +7,9 @@
          %% only async events
          board_created/2, player_x_turn/2]).
 
--record(state, {desc=""}).
+-record(state, {desc="",
+                board = "",
+                status = ""}).
 
 start_link() ->
     gen_fsm:start_link(?MODULE, [], []).
@@ -40,8 +42,9 @@ terminate(_Reason, _StateName, _State) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 board_created(_Msg, State) -> 
-    {stop, normal, prompt(State#state{desc = "Game Board Creation...~n"})}.
-    %%{next_state, player_x_turn, State}.
+    {stop, normal, prompt(State#state{desc = "Game Board Creation...", 
+                                      status = "The game will start with Player X~n"
+                                               "Choose position:"})}.
 
 player_x_turn(_Msg, State) ->
     {stop, normal, State}.
@@ -50,6 +53,12 @@ player_x_turn(_Msg, State) ->
 %%%     Internals     %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-prompt(State = #state{desc = Desc}) ->
-    io:format(Desc),
+prompt(State = #state{desc = Desc, status = Status}) ->
+    io:format("~s~n", [Desc]),
+    io:format("   |   |   ~n"
+              "---+---+---~n"
+              "   |   |   ~n"
+              "---+---+---~n"
+              "   |   |   ~n"),
+    io:format("~s", [Status]),
     State.
