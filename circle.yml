@@ -18,6 +18,8 @@ dependencies:
 test:
   override:
     - rebar3 compile
+    # run unit tests
+    - rebar3 eunit
     # run acceptance tests
     - rebar3 ct
     ##- rebar3 dialyzer##
