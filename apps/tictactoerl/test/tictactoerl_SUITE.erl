@@ -3,7 +3,11 @@
 -compile(export_all).
 
 all() ->
-    [board_created].
+    [
+     board_created
+     %% TODO In progress...
+     %% ,player_wins_with_vertical_line
+    ].
 
 init_per_testcase(_, Config) ->
     mock_io(),
@@ -47,14 +51,71 @@ wait_for_death(Pid) ->
 %%%%%%%%%%%%%%%%%%
 
 board_created(_Config) ->
+    %game_started(),
+
     out("Game Board Creation...\n"),
-    out("   |   |   ~n"
-        "---+---+---~n"
-        "   |   |   ~n"
-        "---+---+---~n"
-        "   |   |   ~n"),
-    out("The game will start with Player X\n"
-        "Choose position:").
+    out("   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("The game will start with Player X\n").
+
+player_wins_with_vertical_line(Config) ->
+    board_created(Config),
+
+    out("Player X:\n"),
+    out("   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position:"),
+    in("1"),
+
+    out("Player O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position:"),
+    in("2"),
+
+    out("Player X:\n"),
+    out(" X | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position:"),
+    in("5"),
+
+    out("Player O:\n"),
+    out(" X | O |   \n"
+        "---+---+---\n"
+        "   | X |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position:"),
+    in("3"),
+
+    out("Player X:\n"),
+    out(" X | O | O \n"
+        "---+---+---\n"
+        "   | X |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position:"),
+    in("9"),
+
+    out("Player X:\n"),
+    out(" X | O | O \n"
+        "---+---+---\n"
+        "   | X |   \n"
+        "---+---+---\n"
+        "   |   | X \n"),
+    out("PLAYER X WON!").
 
 %%%%%%%%%%%%%%%
 %%% HELPERS %%%
@@ -79,3 +140,10 @@ out(Expected) ->
         ct:pal("MBOX: ~p", [process_info(self(), messages)]),
         error({too_long, {out, Expected}})
     end.
+
+%%%%%%%%%%%%%%%%%%%
+%%% READABILITY %%%
+%%%%%%%%%%%%%%%%%%%
+
+game_started() ->
+    out(""),out(""),out("").
