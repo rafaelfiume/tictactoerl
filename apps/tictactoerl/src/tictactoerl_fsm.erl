@@ -43,7 +43,7 @@ terminate(_Reason, _StateName, _State) ->
 
 board_created(_Msg, State) -> 
     {stop, normal, prompt(State#state{desc = "Game Board Creation...", 
-                                      status = "The game will start with Player X~n"
+                                      status = "The game will start with Player X\n"
                                                "Choose position:"})}.
 
 player_x_turn(_Msg, State) ->

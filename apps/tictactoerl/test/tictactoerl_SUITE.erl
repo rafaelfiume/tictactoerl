@@ -3,9 +3,9 @@
 -compile(export_all).
 
 all() ->
-    [demo_session].
+    [board_created].
 
-init_per_testcase(demo_session, Config) ->
+init_per_testcase(_, Config) ->
     mock_io(),
     {ok, Pid} = tictactoerl_fsm:start_link(),
     [{pid, Pid} | Config].
@@ -46,14 +46,14 @@ wait_for_death(Pid) ->
 %%% TEST CASES %%%
 %%%%%%%%%%%%%%%%%%
 
-demo_session(_Config) ->
+board_created(_Config) ->
     out("Game Board Creation...\n"),
     out("   |   |   ~n"
         "---+---+---~n"
         "   |   |   ~n"
         "---+---+---~n"
         "   |   |   ~n"),
-    out("The game will start with Player X~n"
+    out("The game will start with Player X\n"
         "Choose position:").
 
 %%%%%%%%%%%%%%%
@@ -64,7 +64,7 @@ in(Input) ->
     receive
         {in, Pid} -> Pid ! {self(), Input}
     after 1000 ->
-        ct:pal("MBOX: ~p", [process_info(self(), messages)]),
+        ct:pal("MBOX: ~s", [process_info(self(), messages)]),
         error({too_long, {in, Input}})
     end.
 
@@ -72,10 +72,10 @@ in(Input) ->
 out(Expected) ->
     receive
         {out, Prompt} ->
-            ct:pal("Expected: ~p~nPrompt  : ~p", [Expected, Prompt]),
+            ct:pal("Expected: ~s~nPrompt  : ~s", [Expected, Prompt]),
             true = string:equal(Expected, Prompt)
 
     after 1000 ->
-        ct:pal("MBOX: ~p", [process_info(self(), messages)]),
+        ct:pal("MBOX: ~s", [process_info(self(), messages)]),
         error({too_long, {out, Expected}})
     end.
