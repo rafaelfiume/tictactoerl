@@ -23,3 +23,17 @@ Heavilly inspered on https://howistart.org/posts/erlang/1
 * Play online against remote opponent
 * App runs with a double click
 * Provide an installer for the app
+
+# Vagrant
+
+Frequent used commands:
+
+     λ → vagrant up [--provision]
+     λ → vagrant reload
+     λ → vagrant ssh
+
+Find the synched folder at `/tictactoerl`.
+
+## TODO
+
+- Add rebar3 to the path. (Currently running rebar3 with `../home/ubuntu/rebar3/rebar3`)
