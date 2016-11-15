@@ -1,3 +1,4 @@
+# tools
 .rebar3
 rebar3.*
 rebar.*
@@ -10,9 +11,14 @@ _*
 *.swp
 *.swo
 .erlang.cookie
+
+# erlang
 ebin
 log
 erl_crash.dump
 logs
 _build
-.idea
+
+# vagrant
+environment/*
+!environment/Vagrantfile
