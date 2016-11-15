@@ -6,7 +6,8 @@ all() ->
     [
      board_created
      %% TODO In progress...
-     %% ,player_wins_with_vertical_line
+     %,
+     %player_wins_with_vertical_line
     ].
 
 init_per_testcase(_, Config) ->
@@ -51,8 +52,6 @@ wait_for_death(Pid) ->
 %%%%%%%%%%%%%%%%%%
 
 board_created(_Config) ->
-    %game_started(),
-
     out("Game Board Creation...\n"),
     out("   |   |   \n"
         "---+---+---\n"
@@ -64,7 +63,7 @@ board_created(_Config) ->
 player_wins_with_vertical_line(Config) ->
     board_created(Config),
 
-    out("Player X:\n"),
+    out("\nPlayer X:\n"),
     out("   |   |   \n"
         "---+---+---\n"
         "   |   |   \n"
@@ -144,6 +143,3 @@ out(Expected) ->
 %%%%%%%%%%%%%%%%%%%
 %%% READABILITY %%%
 %%%%%%%%%%%%%%%%%%%
-
-game_started() ->
-    out(""),out(""),out("").
