@@ -105,26 +105,16 @@ has_winner(Board) ->
             orelse has_horizontal_winner(Board)
             orelse has_diagonal_winner(Board).
 
-has_vertical_winner(#board_table{top_left = A,
-                                 mid_left = A,
-                                 bottom_left = A}) when A =:= "X" orelse A =:= "O" -> true;
-has_vertical_winner(#board_table{top_center = A,
-                                 center = A,
-                                 bottom_center = A}) when A =:= "X" orelse A =:= "O" -> true;
-has_vertical_winner(#board_table{top_right = A,
-                                 mid_right = A,
-                                 bottom_right = A}) when A =:= "X" orelse A =:= "O" -> true;
+has_vertical_winner(#board_table{top_left   = A, mid_left  = A, bottom_left   = A}) when A =:= "X" orelse A =:= "O" -> true;
+has_vertical_winner(#board_table{top_center = A, center    = A, bottom_center = A}) when A =:= "X" orelse A =:= "O" -> true;
+has_vertical_winner(#board_table{top_right  = A, mid_right = A, bottom_right  = A}) when A =:= "X" orelse A =:= "O" -> true;
 has_vertical_winner(_) -> false.
 
-has_horizontal_winner(#board_table{top_left = A, top_center = A, top_right = A})          when A =:= "X" orelse A =:= "O" -> true;
-has_horizontal_winner(#board_table{mid_left = A, center = A, mid_right = A})              when A =:= "X" orelse A =:= "O" -> true;
+has_horizontal_winner(#board_table{top_left    = A, top_center    = A, top_right    = A}) when A =:= "X" orelse A =:= "O" -> true;
+has_horizontal_winner(#board_table{mid_left    = A, center        = A, mid_right    = A}) when A =:= "X" orelse A =:= "O" -> true;
 has_horizontal_winner(#board_table{bottom_left = A, bottom_center = A, bottom_right = A}) when A =:= "X" orelse A =:= "O" -> true;
 has_horizontal_winner(_) -> false.
 
-has_diagonal_winner(#board_table{bottom_left = A, 
-                                                 center = A, 
-                                                            top_right = A}) when A =:= "X" orelse A =:= "O" -> true;
-has_diagonal_winner(#board_table{top_left = A, 
-                                              center = A, 
-                                                         bottom_right = A}) when A =:= "X" orelse A =:= "O" -> true;
+has_diagonal_winner(#board_table{bottom_left = A, center = A, top_right    = A}) when A =:= "X" orelse A =:= "O" -> true;
+has_diagonal_winner(#board_table{top_left    = A, center = A, bottom_right = A}) when A =:= "X" orelse A =:= "O" -> true;
 has_diagonal_winner(_) -> false.
