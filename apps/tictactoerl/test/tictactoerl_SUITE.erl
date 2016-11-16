@@ -26,14 +26,14 @@ mock_io() ->
     Parent = self(),
     code:unstick_dir(filename:dirname(code:where_is_file("io.beam"))),
     meck:new(io, [passthrough, no_link]),
-    meck:expect(io, format, fun (Str) ->
+    meck:expect(io, format, fun(Str) ->
         Parent ! {out, Str},
         ok
     end),
-    meck:expect(io, format, fun (Str, Args) ->
+    meck:expect(io, format, fun(Str, Args) ->
         Parent ! {out, lists:flatten(io_lib:format(Str, Args))}
     end),
-    meck:expect(io, get_line, fun (_Prompt) ->
+    meck:expect(io, get_line, fun(_Prompt) ->
         Parent ! {in, self()},
         receive {Parent, In} -> In end
     end).
@@ -58,63 +58,52 @@ board_created(_Config) ->
         "   |   |   \n"
         "---+---+---\n"
         "   |   |   \n"),
-    out("The game will start with Player X\n").
+    out("The game will start with Player X\n"
+        "Choose position: ").
 
 player_wins_with_vertical_line(Config) ->
     board_created(Config),
-
-    out("\nPlayer X:\n"),
-    out("   |   |   \n"
-        "---+---+---\n"
-        "   |   |   \n"
-        "---+---+---\n"
-        "   |   |   \n"),
-    out("Choose position:"),
     in("1"),
 
-    out("Player O:\n"),
+    out("\nPlayer O:\n"),
     out(" X |   |   \n"
         "---+---+---\n"
         "   |   |   \n"
         "---+---+---\n"
         "   |   |   \n"),
-    out("Choose position:"),
-    in("2"),
+    out("Choose position: "), in("2"),
 
-    out("Player X:\n"),
+    out("\nPlayer X:\n"),
     out(" X | O |   \n"
         "---+---+---\n"
         "   |   |   \n"
         "---+---+---\n"
         "   |   |   \n"),
-    out("Choose position:"),
-    in("5"),
+    out("Choose position: "), in("5"),
 
-    out("Player O:\n"),
+    out("\nPlayer O:\n"),
     out(" X | O |   \n"
         "---+---+---\n"
         "   | X |   \n"
         "---+---+---\n"
         "   |   |   \n"),
-    out("Choose position:"),
-    in("3"),
+    out("Choose position: "), in("3"),
 
-    out("Player X:\n"),
+    out("\nPlayer X:\n"),
     out(" X | O | O \n"
         "---+---+---\n"
         "   | X |   \n"
         "---+---+---\n"
         "   |   |   \n"),
-    out("Choose position:"),
-    in("9"),
+    out("Choose position: "), in("9"),
 
-    out("Player X:\n"),
+    out("\nPlayer X:\n"),
     out(" X | O | O \n"
         "---+---+---\n"
         "   | X |   \n"
         "---+---+---\n"
         "   |   | X \n"),
-    out("PLAYER X WON!").
+    out("PLAYER X WON! "). 
 
 %%%%%%%%%%%%%%%
 %%% HELPERS %%%

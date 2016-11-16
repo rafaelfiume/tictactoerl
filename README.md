@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/rafaelfiume/tictactoerl/tree/master.svg?style=svg)](https://circleci.com/gh/rafaelfiume/tictactoerl/tree/master) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rafaelfiume/tictactoerl/blob/master/LICENSE)
 # tictactoerl
 
-Heavilly inspered on https://howistart.org/posts/erlang/1
+Heavilly inspered on [Erlang With Fred Hebert](https://howistart.org/posts/erlang/1) to deal with input/output, how to mock and capture them in ct among other things. 
 
     λ → rebar3 compile
     λ → rebar3 release
