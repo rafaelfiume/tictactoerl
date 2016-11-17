@@ -40,13 +40,56 @@ has_diagonal_winner(_) -> false.
 %%%       Board Position      %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-mark_position_if_available(B = #board_table{}, 1, Player) -> B#board_table{top_left      = Player};
-mark_position_if_available(B = #board_table{}, 2, Player) -> B#board_table{top_center    = Player};
-mark_position_if_available(B = #board_table{}, 3, Player) -> B#board_table{top_right     = Player};
-mark_position_if_available(B = #board_table{}, 4, Player) -> B#board_table{mid_left      = Player};
-mark_position_if_available(B = #board_table{}, 5, Player) -> B#board_table{center        = Player};
-mark_position_if_available(B = #board_table{}, 6, Player) -> B#board_table{mid_right     = Player};
-mark_position_if_available(B = #board_table{}, 7, Player) -> B#board_table{bottom_left   = Player};
-mark_position_if_available(B = #board_table{}, 8, Player) -> B#board_table{bottom_center = Player};
-mark_position_if_available(B = #board_table{}, 9, Player) -> B#board_table{bottom_right  = Player};
-mark_position_if_available(B = #board_table{}, Position, _Player) -> io:format("Unknown position ~p", [Position]), B#board_table{}. %% TODO Missing unknown cases
+mark_position_if_available(B = #board_table{}, 1, Player) -> 
+    case cell_is_free_at(B#board_table.top_left) of
+        free -> {true, B#board_table{top_left = Player}};
+        marked -> {false, B}
+    end;
+mark_position_if_available(B = #board_table{}, 2, Player) -> 
+    case cell_is_free_at(B#board_table.top_center) of
+        free -> {true, B#board_table{top_center = Player}};
+        marked -> {false, B}
+    end;
+mark_position_if_available(B = #board_table{}, 3, Player) -> 
+    case cell_is_free_at(B#board_table.top_right) of
+        free -> {true, B#board_table{top_right = Player}};
+        marked -> {false, B}
+    end;
+mark_position_if_available(B = #board_table{}, 4, Player) -> 
+    case cell_is_free_at(B#board_table.mid_left) of
+        free -> {true, B#board_table{mid_left = Player}};
+        marked -> {false, B}
+    end;
+mark_position_if_available(B = #board_table{}, 5, Player) -> 
+    case cell_is_free_at(B#board_table.center) of
+        free -> {true, B#board_table{center = Player}};
+        marked -> {false, B}
+    end;
+mark_position_if_available(B = #board_table{}, 6, Player) -> 
+    case cell_is_free_at(B#board_table.mid_right) of
+        free -> {true, B#board_table{mid_right = Player}};
+        marked -> {false, B}
+    end;
+mark_position_if_available(B = #board_table{}, 7, Player) -> 
+    case cell_is_free_at(B#board_table.bottom_left) of
+        free -> {true, B#board_table{bottom_left = Player}};
+        marked -> {false, B}
+    end;
+mark_position_if_available(B = #board_table{}, 8, Player) -> 
+    case cell_is_free_at(B#board_table.bottom_center) of
+        free -> {true, B#board_table{bottom_center = Player}};
+        marked -> {false, B}
+    end;
+mark_position_if_available(B = #board_table{}, 9, Player) -> 
+    case cell_is_free_at(B#board_table.bottom_right) of
+        free -> {true, B#board_table{bottom_right = Player}};
+        marked -> {false, B}
+    end.
+ %% TODO Missing unknown cases
+
+cell_is_free_at(Position) ->
+    case Position =:= ?NO_SELECTION of
+        true -> free;
+        false -> marked
+    end.
+

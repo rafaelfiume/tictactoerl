@@ -48,7 +48,7 @@ board_created(_Msg, S) ->
                                                         "Choose position: "})}.
 
 player_x_turn(Position, S = #state{board = PreviousBoard}) ->
-    NewBoard = board:mark_position_if_available(PreviousBoard, Position, "O"),
+    {_, NewBoard} = board:mark_position_if_available(PreviousBoard, Position, "O"),
 
     NewState = S#state{board = NewBoard},
 
@@ -58,7 +58,7 @@ player_x_turn(Position, S = #state{board = PreviousBoard}) ->
     end.
 
 player_o_turn(Position, S=#state{board = PreviousBoard}) ->
-    NewBoard = board:mark_position_if_available(PreviousBoard, Position, "X"),
+    {_, NewBoard} = board:mark_position_if_available(PreviousBoard, Position, "X"),
 
     NewState = S#state{board = NewBoard},
 

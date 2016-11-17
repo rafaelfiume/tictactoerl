@@ -88,47 +88,81 @@ wins_with_a_ascendent_diagonal_row_test() ->
 
 mark_position_when__topleft__is_available_test() ->
     PreviousBoad = #board_table{},
-    CurrentBoard = board:mark_position_if_available(PreviousBoad, 1, "X"),
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 1, "X"),
+
+    Free = true,
     CurrentBoard = #board_table{top_left = "X"}.
 
 mark_position_when__topcenter__is_available_test() ->
     PreviousBoad = #board_table{},
-    CurrentBoard = board:mark_position_if_available(PreviousBoad, 2, "X"),
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 2, "X"),
+
+    Free = true,
     CurrentBoard = #board_table{top_center = "X"}.
 
 mark_position_when__topright__is_available_test() ->
     PreviousBoad = #board_table{},
-    CurrentBoard = board:mark_position_if_available(PreviousBoad, 3, "X"),
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 3, "X"),
+    
+    Free = true,
     CurrentBoard = #board_table{top_right = "X"}.
 
 mark_position_when__midleft__is_available_test() ->
     PreviousBoad = #board_table{},
-    CurrentBoard = board:mark_position_if_available(PreviousBoad, 4, "X"),
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 4, "X"),
+
+    Free = true,
     CurrentBoard = #board_table{mid_left = "X"}.
 
 mark_position_when__center__is_available_test() ->
     PreviousBoad = #board_table{},
-    CurrentBoard = board:mark_position_if_available(PreviousBoad, 5, "X"),
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 5, "X"),
+
+    Free = true,
     CurrentBoard = #board_table{center = "X"}.
 
 mark_position_when__midright__is_available_test() ->
     PreviousBoad = #board_table{},
-    CurrentBoard = board:mark_position_if_available(PreviousBoad, 6, "X"),
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 6, "X"),
+
+    Free = true,
     CurrentBoard = #board_table{mid_right = "X"}.
 
 mark_position_when__bottomleft__is_available_test() ->
     PreviousBoad = #board_table{},
-    CurrentBoard = board:mark_position_if_available(PreviousBoad, 7, "X"),
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 7, "X"),
+
+    Free = true,
     CurrentBoard = #board_table{bottom_left = "X"}.
 
 mark_position_when__bottomcenter__is_available_test() ->
     PreviousBoad = #board_table{},
-    CurrentBoard = board:mark_position_if_available(PreviousBoad, 8, "X"),
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 8, "X"),
+
+    Free = true,
     CurrentBoard = #board_table{bottom_center = "X"}.
 
 mark_position_when__bottomright__is_available_test() ->
     PreviousBoad = #board_table{top_left = "X", center = "O", top_right = "X"},
-    CurrentBoard = board:mark_position_if_available(PreviousBoad, 9, "O"),
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 9, "O"),
+
+    Free = true,
     CurrentBoard = #board_table{top_left = "X", center = "O", top_right = "X", bottom_right = "O"}.
 
 %% TODO Missing unknown cases
+does_not_mark_position_when_player_chooses_an_already_marked_one_test() ->
+    PreviousBoad = #board_table{top_left = "X", center = "O", top_right = "X"},
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 1, "O"),
+
+    Free = false,
+    CurrentBoard = PreviousBoad.
