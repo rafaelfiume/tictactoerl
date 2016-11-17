@@ -5,9 +5,8 @@
 all() ->
     [
      board_created
-     %% TODO In progress...
-     %,
-     %player_wins_with_vertical_line
+     ,
+     player_wins_with_diagonal_line
     ].
 
 init_per_testcase(_, Config) ->
@@ -61,7 +60,7 @@ board_created(_Config) ->
     out("The game will start with Player X\n"
         "Choose position: ").
 
-player_wins_with_vertical_line(Config) ->
+player_wins_with_diagonal_line(Config) ->
     board_created(Config),
     in("1"),
 
@@ -103,7 +102,7 @@ player_wins_with_vertical_line(Config) ->
         "   | X |   \n"
         "---+---+---\n"
         "   |   | X \n"),
-    out("PLAYER X WON! "). 
+    out("PLAYER X WON!"). 
 
 %%%%%%%%%%%%%%%
 %%% HELPERS %%%

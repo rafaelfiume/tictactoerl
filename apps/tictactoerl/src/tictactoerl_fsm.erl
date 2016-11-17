@@ -51,24 +51,27 @@ board_created(_Msg, S) ->
 
 player_x_turn(Position, S = #state{board = PreviousBoard}) ->
     NewBoard = mark_position_if_available(PreviousBoard, Position, "O"),
-    {next_state, player_o_turn, prompt(S#state{desc = "\nPlayer X:\n",
-                                               board = NewBoard,
-                                               status = "Choose position: "})};
-player_x_turn(game_over, S) ->
-    {next_state, player_won, prompt(S#state{desc = "\nPlayer X:\n",
-                                            status = "PLAYER X WON"})}.
 
-player_o_turn(Position, S = #state{board = PreviousBoard}) ->
+    NewState = S#state{board = NewBoard},
+
+    case board_has_winner(NewBoard) of
+        game_on -> {next_state, player_o_turn, prompt(NewState#state{desc = "\nPlayer X:\n", status = "Choose position: "})};
+        game_over -> {next_state, player_won, prompt(NewState#state{desc = "\nPlayer O:\n", status = "PLAYER O WON!"})}
+    end.
+
+player_o_turn(Position, S=#state{board = PreviousBoard}) ->
     NewBoard = mark_position_if_available(PreviousBoard, Position, "X"),
-    {next_state, player_x_turn, prompt(S#state{desc = "\nPlayer O:\n",
-                                               board = NewBoard,
-                                               status = "Choose position: "})};
-player_o_turn(game_over, S) ->
-    {next_state, player_won, prompt(S#state{desc = "\nPlayer X:\n",
-                                            status = "PLAYER X WON"})}.
+
+    NewState = S#state{board = NewBoard},
+
+    case board_has_winner(NewBoard) of
+        game_on -> {next_state, player_x_turn, prompt(NewState#state{desc = "\nPlayer O:\n", status = "Choose position: "})};
+        game_over -> {next_state, player_won, prompt(NewState#state{desc = "\nPlayer X:\n", status = "PLAYER X WON!"})}
+    end.
     
 player_won(_Msg, S) ->
-    {stop, normal, S}.
+    io:format("returning stop normal"),
+    {stop, shutdown, S}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     Internals     %%%
@@ -77,23 +80,22 @@ player_won(_Msg, S) ->
 prompt() -> %% actually not prompting, just sending an event
     gen_fsm:send_event(self(), game_on),
     #state{}.
-prompt(State = #state{desc = Desc, board = Board, status = Status, pid = undefined}) ->
-    io:format("~s", [Desc]),
-    io:format(board_to_string(Board)),
-    io:format("~s", [Status]),
-    %% reads the user input here and gets the new/current board
-    %% NewBoard = mark_position_if_available(Board, option(io:get_line("")), Player),
-    %% checks if there's a winner and send the event
-    %% gen_fsm:send_event(self(), board_has_winner(Board)),
-    %% returns the new board
-    %% State#state{board = NewBoard}.
+prompt(State = #state{pid = undefined}) ->
+    output(State),
     State#state{pid=get_input()};
 prompt(State = #state{pid = Pid}) when is_pid(Pid) ->
     unlink(Pid),
     exit(Pid, kill),
     prompt(State#state{pid = undefined}).
 
-get_input() ->
+output(State = #state{desc = Desc, board = Board, status = Status}) ->
+    io:format("~s", [Desc]),
+    io:format(board_to_string(Board)),
+    io:format("~s", [Status]),
+    State.
+
+get_input()
+ ->
     Parent = self(),
     spawn_link(fun() ->
         gen_fsm:send_event(Parent, option(io:get_line("")))
@@ -131,7 +133,7 @@ board_to_string(#board_table{top_left = Tl   , top_center = Tc   , top_right = T
                                        Ml, Ce, Mr,
                                        Bl, Bc, Br])).
 
-board_has_winner(Board) ->
+board_has_winner(Board) -> 
     case has_winner(Board) of
         true  -> game_over;
         false -> game_on
