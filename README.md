@@ -63,10 +63,10 @@ sudo ln -s /usr/bin/curl-config /opt/vagrant/embedded/bin/curl-config
 # TODO List
 
 * ~~Board creation~~
-* Player wins with vertical line
+* ~~Player wins with vertical line~~
 * Player wins with horizontal line
 * ~~Player wins with diagonal line~~
-* Game with diagonal line
+* Game with a draw
 * Play the game in BOT mode
 * Validate user input
 * Implement GUI
