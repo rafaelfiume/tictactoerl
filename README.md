@@ -64,7 +64,7 @@ sudo ln -s /usr/bin/curl-config /opt/vagrant/embedded/bin/curl-config
 
 * ~~Board creation~~
 * ~~Player wins with vertical line~~
-* Player wins with horizontal line
+* ~~Player wins with horizontal line~~
 * ~~Player wins with diagonal line~~
 * Game with a draw
 * Play the game in BOT mode

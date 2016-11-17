@@ -8,6 +8,8 @@ all() ->
      ,
      player_wins_with_vertical_line
      ,
+     player_wins_with_horizontal_line
+     ,
      player_wins_with_diagonal_line
     ].
 
@@ -113,6 +115,50 @@ player_wins_with_vertical_line(Config) ->
         "---+---+---\n"
         " X | X |   \n"),
     out("PLAYER O WON!").
+
+player_wins_with_horizontal_line(Config) ->
+    board_created(Config),
+    in("1"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("5"),
+
+    out("\nPlayer X:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("2"),
+
+    out("\nPlayer O:\n"),
+    out(" X | X |   \n"
+        "---+---+---\n"
+        "   | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("4"),
+
+    out("\nPlayer X:\n"),
+    out(" X | X |   \n"
+        "---+---+---\n"
+        " O | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("3"),
+
+    out("\nPlayer X:\n"),
+    out(" X | X | X \n"
+        "---+---+---\n"
+        " O | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("PLAYER X WON!").
 
 player_wins_with_diagonal_line(Config) ->
     board_created(Config),
