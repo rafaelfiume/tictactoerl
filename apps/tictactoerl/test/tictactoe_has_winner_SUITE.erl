@@ -1,4 +1,4 @@
--module(tictactoerl_SUITE).
+-module(tictactoe_has_winner_SUITE).
 -include_lib("common_test/include/ct.hrl").
 -compile(export_all).
 
