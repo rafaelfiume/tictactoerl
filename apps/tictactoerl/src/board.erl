@@ -84,8 +84,9 @@ mark_position_if_available(B = #board_table{}, 9, Player) ->
     case cell_is_free_at(B#board_table.bottom_right) of
         free -> {true, B#board_table{bottom_right = Player}};
         marked -> {false, B}
-    end.
- %% TODO Missing unknown cases
+    end;
+mark_position_if_available(B = #board_table{}, unknown, _Player) -> 
+        {false, B}.
 
 cell_is_free_at(Position) ->
     case Position =:= ?NO_SELECTION of

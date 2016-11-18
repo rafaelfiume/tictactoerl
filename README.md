@@ -102,7 +102,7 @@ If you are having problems compiling or executing the tests after rebasing chang
 * ~~Player wins with diagonal line~~
 * Game with a draw
 * Play the game in BOT mode
-* Validate user input
+* ~~Validate user input~~
 * Implement GUI
 * Play against computer AI
 * Play online against remote opponent

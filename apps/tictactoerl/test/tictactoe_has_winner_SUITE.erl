@@ -4,13 +4,15 @@
 
 all() ->
     [
-     player_wins_with_vertical_line
+     player_wins_with__vertical__line
      ,
-     player_wins_with_horizontal_line
+     player_wins_with__horizontal__line
      ,
-     player_wins_with_diagonal_line
+     player_wins_with__diagonal__line
      ,
-     player_has_to_select_a_free_position_in_the_board
+     player_has_to_select_a__free__position_in_the_board
+     ,
+     player_has_to_select_a__valid__position_in_the_board
     ].
 
 init_per_testcase(_, Config) ->
@@ -64,47 +66,11 @@ board_created(_Config) ->
     out("The game will start with Player X\n"
         "Choose position: ").
 
-player_has_to_select_a_free_position_in_the_board(Config) ->
-    board_created(Config),
-    in("1"),
-
-    out("\nPlayer O:\n"),
-    out(" X |   |   \n"
-        "---+---+---\n"
-        "   |   |   \n"
-        "---+---+---\n"
-        "   |   |   \n"),
-    out("Choose position: "), in("1"),
-
-    out("\nPlayer O:\n"),
-    out(" X |   |   \n"
-        "---+---+---\n"
-        "   |   |   \n"
-        "---+---+---\n"
-        "   |   |   \n"),
-    out("Choose position: "), in("2"),
-
-    out("\nPlayer X:\n"),
-    out(" X | O |   \n"
-        "---+---+---\n"
-        "   |   |   \n"
-        "---+---+---\n"
-        "   |   |   \n"),
-    out("Choose position: "), in("2"),
-
-    out("\nPlayer X:\n"),
-    out(" X | O |   \n"
-        "---+---+---\n"
-        "   |   |   \n"
-        "---+---+---\n"
-        "   |   |   \n"),
-    out("Choose position: ").
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  TEST CASES  - WINNING \O/  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-player_wins_with_vertical_line(Config) ->
+player_wins_with__vertical__line(Config) ->
     board_created(Config),
     in("1"),
 
@@ -122,41 +88,41 @@ player_wins_with_vertical_line(Config) ->
         "   | O |   \n"
         "---+---+---\n"
         "   |   |   \n"),
-    out("Choose position: "), in("8"),
+    out("Choose position: "), in("3"),
 
     out("\nPlayer O:\n"),
-    out(" X |   |   \n"
+    out(" X |   | X \n"
         "---+---+---\n"
         "   | O |   \n"
         "---+---+---\n"
-        "   | X |   \n"),
-    out("Choose position: "), in("6"),
+        "   |   |   \n"),
+    out("Choose position: "), in("2"),
 
     out("\nPlayer X:\n"),
-    out(" X |   |   \n"
+    out(" X | O | X \n"
         "---+---+---\n"
-        "   | O | O \n"
+        "   | O |   \n"
         "---+---+---\n"
-        "   | X |   \n"),
+        "   |   |   \n"),
     out("Choose position: "), in("7"),
 
     out("\nPlayer O:\n"),
-    out(" X |   |   \n"
+    out(" X | O | X \n"
         "---+---+---\n"
-        "   | O | O \n"
+        "   | O |   \n"
         "---+---+---\n"
-        " X | X |   \n"),
-    out("Choose position: "), in("4"),
+        " X |   |   \n"),
+    out("Choose position: "), in("8"),
 
     out("\nPlayer O:\n"),
-    out(" X |   |   \n"
+    out(" X | O | X \n"
         "---+---+---\n"
-        " O | O | O \n"
+        "   | O |   \n"
         "---+---+---\n"
-        " X | X |   \n"),
+        " X | O |   \n"),
     out("PLAYER O WON!").
 
-player_wins_with_horizontal_line(Config) ->
+player_wins_with__horizontal__line(Config) ->
     board_created(Config),
     in("1"),
 
@@ -200,7 +166,7 @@ player_wins_with_horizontal_line(Config) ->
         "   |   |   \n"),
     out("PLAYER X WON!").
 
-player_wins_with_diagonal_line(Config) ->
+player_wins_with__diagonal__line(Config) ->
     board_created(Config),
     in("1"),
 
@@ -244,6 +210,74 @@ player_wins_with_diagonal_line(Config) ->
         "   |   | X \n"),
     out("PLAYER X WON!"). 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   TEST CASES  - SAD PATH    %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+player_has_to_select_a__free__position_in_the_board(Config) ->
+    board_created(Config),
+    in("1"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("1"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("2"),
+
+    out("\nPlayer X:\n"),
+    out(" X | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("2"),
+
+    out("\nPlayer X:\n"),
+    out(" X | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: ").
+
+player_has_to_select_a__valid__position_in_the_board(Config) ->
+    board_created(Config),
+    in("w"),
+
+    out("\nPlayer X:\n"),
+    out("   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("1"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("99"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: ").
+
 %%%%%%%%%%%%%%%
 %%% HELPERS %%%
 %%%%%%%%%%%%%%%
@@ -267,7 +301,3 @@ out(Expected) ->
         ct:pal("MBOX: ~p", [process_info(self(), messages)]),
         error({too_long, {out, Expected}})
     end.
-
-%%%%%%%%%%%%%%%%%%%
-%%% READABILITY %%%
-%%%%%%%%%%%%%%%%%%%

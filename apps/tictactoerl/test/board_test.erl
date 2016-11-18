@@ -25,7 +25,7 @@ game_is_in_progress_test() ->
 %%%     Wins     %%%
 %%%%%%%%%%%%%%%%%%%%
 
-wins_with_a_vertical_row_in_the_left_test() ->
+wins_with_a__vertical__row_in_the_left_test() ->
     Board = #board_table{top_left = "X", 
                          mid_left = "X", 
                          bottom_left ="X"},
@@ -34,7 +34,7 @@ wins_with_a_vertical_row_in_the_left_test() ->
 
     game_over = GameStatus.
 
-wins_with_a_vertical_row_in_the_center_test() ->
+wins_with_a__vertical__row_in_the_center_test() ->
     Board = #board_table{top_center = "X", 
                          center = "X", 
                          bottom_center ="X"},
@@ -43,28 +43,35 @@ wins_with_a_vertical_row_in_the_center_test() ->
 
     game_over = GameStatus.
 
-wins_with_a_vertical_row_in_the_right_test() ->
+wins_with_a__vertical__row_in_the_right_test() ->
     Board = #board_table{top_right = "X", mid_right = "X", bottom_right ="X"},
 
     GameStatus = board:has_winner(Board),
 
     game_over = GameStatus.
 
-wins_with_a_horizontal_row_in_the_top_test() ->
+wins_with_a__horizontal__row_in_the_top_test() ->
     Board = #board_table{top_left = "O", top_center = "O", top_right ="O"},
 
     GameStatus = board:has_winner(Board),
 
     game_over = GameStatus.
 
-wins_with_a_horizontal_row_in_the_center_test() ->
+wins_with_a__horizontal__row_in_the_center_test() ->
     Board = #board_table{mid_left = "O", center = "O", mid_right ="O"},
 
     GameStatus = board:has_winner(Board),
 
     game_over = GameStatus.
 
-wins_with_a_descendent_diagonal_row_test() ->
+wins_with_a__horizontal__row_in_the_bottom_test() ->
+    Board = #board_table{bottom_left = "O", bottom_center = "O", bottom_right ="O"},
+
+    GameStatus = board:has_winner(Board),
+
+    game_over = GameStatus.
+
+wins_with_a__descendent_diagonal__row_test() ->
     Board = #board_table{top_left = "X", 
                                         center = "X", 
                                                      bottom_right ="X"},
@@ -73,7 +80,7 @@ wins_with_a_descendent_diagonal_row_test() ->
 
     game_over = GameStatus.
 
-wins_with_a_ascendent_diagonal_row_test() ->
+wins_with_a__ascendent_diagonal__row_test() ->
     Board = #board_table{bottom_left = "X", 
                                            center = "X", 
                                                         top_right ="X"},
@@ -158,11 +165,22 @@ mark_position_when__bottomright__is_available_test() ->
     Free = true,
     CurrentBoard = #board_table{top_left = "X", center = "O", top_right = "X", bottom_right = "O"}.
 
-%% TODO Missing unknown cases
-does_not_mark_position_when_player_chooses_an_already_marked_one_test() ->
+%%%%%%%%%%%%%%%%%%%%
+%%%   SAD PATH   %%%
+%%%%%%%%%%%%%%%%%%%%
+
+does_not_mark_position_when_player_chooses_an__already_marked_one__test() ->
     PreviousBoad = #board_table{top_left = "X", center = "O", top_right = "X"},
 
     {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, 1, "O"),
+
+    Free = false,
+    CurrentBoard = PreviousBoad.
+
+does_not_mark_position_when_player_chooses__an_unknown_position__test() ->
+    PreviousBoad = #board_table{top_left = "X", center = "O", top_right = "X"},
+
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, unknown, "O"),
 
     Free = false,
     CurrentBoard = PreviousBoad.
