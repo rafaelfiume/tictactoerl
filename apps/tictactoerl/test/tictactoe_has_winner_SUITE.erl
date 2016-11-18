@@ -4,13 +4,13 @@
 
 all() ->
     [
-     board_created
-     ,
      player_wins_with_vertical_line
      ,
      player_wins_with_horizontal_line
      ,
      player_wins_with_diagonal_line
+     ,
+     player_has_to_select_a_free_position_in_the_board
     ].
 
 init_per_testcase(_, Config) ->
@@ -63,6 +63,46 @@ board_created(_Config) ->
         "   |   |   \n"),
     out("The game will start with Player X\n"
         "Choose position: ").
+
+player_has_to_select_a_free_position_in_the_board(Config) ->
+    board_created(Config),
+    in("1"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("1"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("2"),
+
+    out("\nPlayer X:\n"),
+    out(" X | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("2"),
+
+    out("\nPlayer X:\n"),
+    out(" X | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: ").
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  TEST CASES  - WINNING \O/  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 player_wins_with_vertical_line(Config) ->
     board_created(Config),

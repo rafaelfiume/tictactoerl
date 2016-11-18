@@ -43,28 +43,38 @@ terminate(_Reason, _StateName, _State) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 board_created(_Msg, S) -> 
-    {next_state, player_o_turn, prompt(S#state{desc = "Game Board Creation...\n",
+    {next_state, player_x_turn, prompt(S#state{desc = "Game Board Creation...\n",
                                                status = "The game will start with Player X\n"
                                                         "Choose position: "})}.
-
-player_x_turn(Position, S = #state{board = PreviousBoard}) ->
-    {_, NewBoard} = board:mark_position_if_available(PreviousBoard, Position, "O"),
+    
+player_x_turn(Position, S=#state{board = PreviousBoard}) ->
+    {FreePosition, NewBoard} = board:mark_position_if_available(PreviousBoard, Position, "X"),
 
     NewState = S#state{board = NewBoard},
-
-    case board:has_winner(NewBoard) of
-        game_on -> {next_state, player_o_turn, prompt(NewState#state{desc = "\nPlayer X:\n", status = "Choose position: "})};
-        game_over -> {next_state, player_won, prompt(NewState#state{desc = "\nPlayer O:\n", status = "PLAYER O WON!"})}
+    
+    case FreePosition of
+        true ->
+            case board:has_winner(NewBoard) of
+                game_on -> {next_state, player_o_turn, prompt(NewState#state{desc = "\nPlayer O:\n", status = "Choose position: "})};
+                game_over -> {next_state, player_won, prompt(NewState#state{desc = "\nPlayer X:\n", status = "PLAYER X WON!"})}
+            end;
+        false ->
+            {next_state, player_x_turn, prompt(NewState#state{desc = "\nPlayer X:\n", status = "Choose position: "})}
     end.
 
-player_o_turn(Position, S=#state{board = PreviousBoard}) ->
-    {_, NewBoard} = board:mark_position_if_available(PreviousBoard, Position, "X"),
+player_o_turn(Position, S = #state{board = PreviousBoard}) ->
+    {FreePosition, NewBoard} = board:mark_position_if_available(PreviousBoard, Position, "O"),
 
     NewState = S#state{board = NewBoard},
 
-    case board:has_winner(NewBoard) of
-        game_on -> {next_state, player_x_turn, prompt(NewState#state{desc = "\nPlayer O:\n", status = "Choose position: "})};
-        game_over -> {next_state, player_won, prompt(NewState#state{desc = "\nPlayer X:\n", status = "PLAYER X WON!"})}
+    case FreePosition of
+        true ->
+            case board:has_winner(NewBoard) of
+                game_on -> {next_state, player_x_turn, prompt(NewState#state{desc = "\nPlayer X:\n", status = "Choose position: "})};
+                game_over -> {next_state, player_won, prompt(NewState#state{desc = "\nPlayer O:\n", status = "PLAYER O WON!"})}
+            end;
+        false ->
+            {next_state, player_o_turn, prompt(NewState#state{desc = "\nPlayer O:\n", status = "Choose position: "})}
     end.
     
 player_won(_Msg, S) ->
