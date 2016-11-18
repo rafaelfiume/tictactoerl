@@ -42,40 +42,16 @@ terminate(_Reason, _StateName, _State) ->
 %%%       States      %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-board_created(_Msg, S) -> 
-    {next_state, player_x_turn, prompt(S#state{desc = "Game Board Creation...\n",
+board_created(_Msg, State) -> 
+    {next_state, player_x_turn, prompt(State#state{desc = "Game Board Creation...\n",
                                                status = "The game will start with Player X\n"
                                                         "Choose position: "})}.
-    
-player_x_turn(Position, S=#state{board = PreviousBoard}) ->
-    {FreePosition, NewBoard} = board:mark_position_if_available(PreviousBoard, Position, "X"),
 
-    NewState = S#state{board = NewBoard},
-    
-    case FreePosition of
-        true ->
-            case board:has_winner(NewBoard) of
-                game_on -> {next_state, player_o_turn, prompt(NewState#state{desc = "\nPlayer O:\n", status = "Choose position: "})};
-                game_over -> {next_state, player_won, prompt(NewState#state{desc = "\nPlayer X:\n", status = "PLAYER X WON!"})}
-            end;
-        false ->
-            {next_state, player_x_turn, prompt(NewState#state{desc = "\nPlayer X:\n", status = "Choose position: "})}
-    end.
+player_x_turn(Position, State) ->
+    play_turn("X", Position, State).
 
-player_o_turn(Position, S = #state{board = PreviousBoard}) ->
-    {FreePosition, NewBoard} = board:mark_position_if_available(PreviousBoard, Position, "O"),
-
-    NewState = S#state{board = NewBoard},
-
-    case FreePosition of
-        true ->
-            case board:has_winner(NewBoard) of
-                game_on -> {next_state, player_x_turn, prompt(NewState#state{desc = "\nPlayer X:\n", status = "Choose position: "})};
-                game_over -> {next_state, player_won, prompt(NewState#state{desc = "\nPlayer O:\n", status = "PLAYER O WON!"})}
-            end;
-        false ->
-            {next_state, player_o_turn, prompt(NewState#state{desc = "\nPlayer O:\n", status = "Choose position: "})}
-    end.
+player_o_turn(Position, State) ->
+    play_turn("O", Position, State).
     
 player_won(_Msg, S) ->
     {stop, shutdown, S}.
@@ -87,6 +63,35 @@ player_won(_Msg, S) ->
 start() ->
     gen_fsm:send_event(self(), game_on),
     #state{}.
+
+play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard}) ->
+    {FreePosition, CurrentBoard} = board:mark_position_if_available(PreviousBoard, Position, CurrentPlayer),
+
+    CurrentState = State#state{board = CurrentBoard},
+
+    {MaybeNextTurn, MaybePlayerWinner} = case CurrentPlayer of
+        "X" -> {player_o_turn, player_x_turn};
+        "O" -> {player_x_turn, player_o_turn}
+    end,
+    case FreePosition of
+        true ->
+            case board:has_winner(CurrentBoard) of
+                game_on -> next_turn(MaybeNextTurn, CurrentState);
+                game_over -> won(CurrentPlayer, CurrentState)
+            end;
+        false ->
+            next_turn(MaybePlayerWinner, CurrentState)
+    end.
+
+next_turn(PlayerTurn, State) ->
+    Player = case PlayerTurn of
+        player_o_turn -> "O";
+        player_x_turn -> "X"
+    end,
+    {next_state, PlayerTurn, prompt(State#state{desc = "\nPlayer "++Player++":\n", status = "Choose position: "})}.
+
+won(Player, State) ->
+    {next_state, player_won, prompt(State#state{desc = "\nPlayer "++Player++":\n", status = "PLAYER "++Player++" WON!"})}.
 
 prompt(State = #state{pid = undefined}) ->
     output(State),
