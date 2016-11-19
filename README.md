@@ -29,7 +29,7 @@ Other useful commands are:
     λ → rebar3 dialyzer
 
 
-# Vagrant
+# [Vagrant](#vagrant)
 
 You can use [Vagrant](https://www.vagrantup.com) to build, run tests and execute this program. To do that:
 
