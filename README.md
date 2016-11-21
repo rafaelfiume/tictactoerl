@@ -93,6 +93,10 @@ If you are having problems compiling or executing the tests after rebasing chang
 
      λ → git clean -dfx --force
 
+or just:
+
+     λ →  rm -r _build/
+
 
 # TODO List
 
@@ -100,7 +104,7 @@ If you are having problems compiling or executing the tests after rebasing chang
 * ~~Player wins with vertical line~~
 * ~~Player wins with horizontal line~~
 * ~~Player wins with diagonal line~~
-* Game with a draw
+* Game ends with a draw
 * Play the game in BOT mode
 * ~~Validate user input~~
 * Implement GUI

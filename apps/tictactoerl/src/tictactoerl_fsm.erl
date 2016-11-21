@@ -5,12 +5,13 @@
 -export([init/1, terminate/3, code_change/4, % setup/teardown/upgrade
          handle_event/3, handle_sync_event/4, handle_info/3, % otp fsm events
          %% async events
-         board_created/2, player_x_turn/2, player_o_turn/2, player_won/2]).
+         board_created/2, player_x_turn/2, player_o_turn/2, game_ends/2]).
 
 -include("board_table.hrl"). %% TODO This should be incapsulated in Board module
 -record(state, {desc = "",
                 board = #board_table{},
                 status = "",
+                turn = 1,
                 pid}).
 
 start_link() ->
@@ -44,8 +45,8 @@ terminate(_Reason, _StateName, _State) ->
 
 board_created(_Msg, State) -> 
     {next_state, player_x_turn, prompt(State#state{desc = "Game Board Creation...\n",
-                                               status = "The game will start with Player X\n"
-                                                        "Choose position: "})}.
+                                                   status = "The game will start with Player X\n"
+                                                            "Choose position: "})}.
 
 player_x_turn(Position, State) ->
     play_turn("X", Position, State).
@@ -53,7 +54,7 @@ player_x_turn(Position, State) ->
 player_o_turn(Position, State) ->
     play_turn("O", Position, State).
     
-player_won(_Msg, S) ->
+game_ends(_Msg, S) ->
     {stop, shutdown, S}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,19 +65,24 @@ start() ->
     gen_fsm:send_event(self(), game_on),
     #state{}.
 
-play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard}) ->
+play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = 9}) ->
+    {_, CurrentBoard} = board:mark_position_if_available(PreviousBoard, Position, CurrentPlayer),
+    draw(State#state{board = CurrentBoard});
+
+play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = Turn}) ->
     {FreePosition, CurrentBoard} = board:mark_position_if_available(PreviousBoard, Position, CurrentPlayer),
 
-    CurrentState = State#state{board = CurrentBoard},
+    NextTurn = Turn + 1,
+    CurrentState = State#state{board = CurrentBoard, turn = NextTurn},
 
-    {MaybeNextTurn, MaybePlayerWinner} = case CurrentPlayer of
+    {PlayerTurn, MaybePlayerWinner} = case CurrentPlayer of
         "X" -> {player_o_turn, player_x_turn};
         "O" -> {player_x_turn, player_o_turn}
     end,
     case FreePosition of
         true ->
             case board:has_winner(CurrentBoard) of
-                game_on -> next_turn(MaybeNextTurn, CurrentState);
+                game_on -> next_turn(PlayerTurn, CurrentState);
                 game_over -> won(CurrentPlayer, CurrentState)
             end;
         false ->
@@ -91,7 +97,10 @@ next_turn(PlayerTurn, State) ->
     {next_state, PlayerTurn, prompt(State#state{desc = "\nPlayer "++Player++":\n", status = "Choose position: "})}.
 
 won(Player, State) ->
-    {next_state, player_won, prompt(State#state{desc = "\nPlayer "++Player++":\n", status = "PLAYER "++Player++" WON!"})}.
+    {next_state, game_ends, prompt(State#state{desc = "\nPlayer "++Player++":\n", status = "PLAYER "++Player++" WON!"})}.
+
+draw(State) ->
+    {next_state, game_ends, prompt(State#state{desc = "\nNo More Turns Left :-)\n", status = "GAME ENDS WITH A DRAW!"})}.
 
 prompt(State = #state{pid = undefined}) ->
     output(State),

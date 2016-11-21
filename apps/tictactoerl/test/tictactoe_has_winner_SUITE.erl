@@ -10,6 +10,8 @@ all() ->
      ,
      player_wins_with__diagonal__line
      ,
+     game_ends_with_a_draw_when_players_cant_get_three_in_a_row
+     ,
      player_has_to_select_a__free__position_in_the_board
      ,
      player_has_to_select_a__valid__position_in_the_board
@@ -208,7 +210,87 @@ player_wins_with__diagonal__line(Config) ->
         "   | X |   \n"
         "---+---+---\n"
         "   |   | X \n"),
-    out("PLAYER X WON!"). 
+    out("PLAYER X WON!").
+
+%%%%%%%%%%%%%%%%%%%
+%%%   DRAW oO   %%%
+%%%%%%%%%%%%%%%%%%%
+
+game_ends_with_a_draw_when_players_cant_get_three_in_a_row(Config) ->
+    board_created(Config),
+    in("1"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("5"),
+
+    out("\nPlayer X:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        "   | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("4"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        " X | O |   \n"
+        "---+---+---\n"
+        "   |   |   \n"),
+    out("Choose position: "), in("7"),
+
+    out("\nPlayer X:\n"),
+    out(" X |   |   \n"
+        "---+---+---\n"
+        " X | O |   \n"
+        "---+---+---\n"
+        " O |   |   \n"),
+    out("Choose position: "), in("3"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   | X \n"
+        "---+---+---\n"
+        " X | O |   \n"
+        "---+---+---\n"
+        " O |   |   \n"),
+    out("Choose position: "), in("9"),
+
+    out("\nPlayer X:\n"),
+    out(" X |   | X \n"
+        "---+---+---\n"
+        " X | O |   \n"
+        "---+---+---\n"
+        " O |   | O \n"),
+    out("Choose position: "), in("8"),
+
+    out("\nPlayer O:\n"),
+    out(" X |   | X \n"
+        "---+---+---\n"
+        " X | O |   \n"
+        "---+---+---\n"
+        " O | X | O \n"),
+    out("Choose position: "), in("2"),
+
+    out("\nPlayer X:\n"),
+    out(" X | O | X \n"
+        "---+---+---\n"
+        " X | O |   \n"
+        "---+---+---\n"
+        " O | X | O \n"),
+    out("Choose position: "), in("6"),
+
+    out("\nNo More Turns Left :-)\n"),
+    out(" X | O | X \n"
+        "---+---+---\n"
+        " X | O | X \n"
+        "---+---+---\n"
+        " O | X | O \n"),
+    out("GAME ENDS WITH A DRAW!").
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%   TEST CASES  - SAD PATH    %%%
@@ -294,7 +376,7 @@ in(Input) ->
 out(Expected) ->
     receive
         {out, Prompt} ->
-            ct:pal("Expected: ~s~nPrompt  : ~s", [Expected, Prompt]),
+            ct:pal("Expected:~n~s~nPrompt:~n~s", [Expected, Prompt]),
             true = string:equal(Expected, Prompt)
 
     after 1000 ->
