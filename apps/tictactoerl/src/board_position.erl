@@ -9,5 +9,9 @@ user_input(Input) when is_binary(Input) ->
             [H|_] = Captured, 
             list_to_integer(H);
         nomatch ->
-             unknown
-    end.
+             unknown_position
+    end;
+% this was added due to get_input (in tictactoe_fsm) returning [eof] during its unit test (tictactoe_fsm_tests); 
+% not sure this is the best approach, though
+user_input(eof) -> 
+    unknown_position.

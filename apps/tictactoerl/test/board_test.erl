@@ -180,7 +180,7 @@ does_not_mark_position_when_player_chooses_an__already_marked_one__test() ->
 does_not_mark_position_when_player_chooses__an_unknown_position__test() ->
     PreviousBoad = #board_table{top_left = "X", center = "O", top_right = "X"},
 
-    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, unknown, "O"),
+    {Free, CurrentBoard} = board:mark_position_if_available(PreviousBoad, unknown_position, "O"),
 
     Free = false,
     CurrentBoard = PreviousBoad.

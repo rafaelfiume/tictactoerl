@@ -15,9 +15,10 @@ maps_user_input_to_correct_board_position_test_() ->
      ?_assertEqual(7, board_position:user_input("7\n")),
      ?_assertEqual(8, board_position:user_input("8\n")),
      ?_assertEqual(9, board_position:user_input("9\n")),
-     ?_assertEqual(unknown, board_position:user_input("k\n")),
-     ?_assertEqual(unknown, board_position:user_input("10")),
-     ?_assertEqual(unknown, board_position:user_input("10\n")),
-     ?_assertEqual(unknown, board_position:user_input("11"))
+     
+     ?_assertEqual(unknown_position, board_position:user_input("k\n")),
+     ?_assertEqual(unknown_position, board_position:user_input("10")),
+     ?_assertEqual(unknown_position, board_position:user_input("10\n")),
+     ?_assertEqual(unknown_position, board_position:user_input("11"))
     ].
     

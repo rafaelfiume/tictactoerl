@@ -104,7 +104,7 @@ or just:
 * ~~Player wins with vertical line~~
 * ~~Player wins with horizontal line~~
 * ~~Player wins with diagonal line~~
-* Game ends with a draw
+* ~~Game ends with a draw~~
 * Play the game in BOT mode
 * ~~Validate user input~~
 * Implement GUI

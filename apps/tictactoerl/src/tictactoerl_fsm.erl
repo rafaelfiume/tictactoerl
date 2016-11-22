@@ -72,8 +72,7 @@ play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = 
 play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = Turn}) ->
     {FreePosition, CurrentBoard} = board:mark_position_if_available(PreviousBoard, Position, CurrentPlayer),
 
-    NextTurn = Turn + 1,
-    CurrentState = State#state{board = CurrentBoard, turn = NextTurn},
+    CurrentState = State#state{board = CurrentBoard},
 
     {PlayerTurn, MaybePlayerWinner} = case CurrentPlayer of
         "X" -> {player_o_turn, player_x_turn};
@@ -82,7 +81,7 @@ play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = 
     case FreePosition of
         true ->
             case board:has_winner(CurrentBoard) of
-                game_on -> next_turn(PlayerTurn, CurrentState);
+                game_on -> next_turn(PlayerTurn, CurrentState#state{turn = Turn + 1});
                 game_over -> won(CurrentPlayer, CurrentState)
             end;
         false ->

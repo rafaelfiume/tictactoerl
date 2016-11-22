@@ -67,7 +67,7 @@ mark_position_if_available(B, 9, Player) ->
         free -> {true, B#board_table{bottom_right = Player}};
         marked -> {false, B}
     end;
-mark_position_if_available(B, unknown, _Player) -> 
+mark_position_if_available(B, unknown_position, _Player) -> 
         {false, B}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
