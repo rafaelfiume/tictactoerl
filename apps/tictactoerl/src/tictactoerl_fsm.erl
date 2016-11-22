@@ -7,12 +7,14 @@
          %% async events
          board_created/2, player_x_turn/2, player_o_turn/2, game_ends/2]).
 
--include("board_table.hrl"). %% TODO This should be incapsulated in Board module
+-include("board_table.hrl").
 -record(state, {desc = "",
                 board = #board_table{},
                 status = "",
                 turn = 1,
                 pid}).
+
+-define(MAX_TURNS, 9).
 
 start_link() ->
     gen_fsm:start_link(?MODULE, [], []).
@@ -65,10 +67,15 @@ start() ->
     gen_fsm:send_event(self(), game_on),
     #state{}.
 
-play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = 9}) ->
+play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = ?MAX_TURNS}) ->
     {_, CurrentBoard} = board:mark_position_if_available(PreviousBoard, Position, CurrentPlayer),
-    draw(State#state{board = CurrentBoard});
 
+    CurrentState = State#state{board = CurrentBoard},
+
+    case board:has_winner(CurrentBoard) of
+        game_on -> draw(CurrentState);
+        game_over -> won(CurrentPlayer, CurrentState)
+    end;
 play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = Turn}) ->
     {FreePosition, CurrentBoard} = board:mark_position_if_available(PreviousBoard, Position, CurrentPlayer),
 
