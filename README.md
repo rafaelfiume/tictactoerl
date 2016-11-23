@@ -1,7 +1,9 @@
 [![CircleCI](https://circleci.com/gh/rafaelfiume/tictactoerl/tree/master.svg?style=svg)](https://circleci.com/gh/rafaelfiume/tictactoerl/tree/master) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rafaelfiume/tictactoerl/blob/master/LICENSE)
 # tictactoerl
 
-A simple Tic-Tac-Toe console game implemented with Erlang. A Kotlin version is available [here](https://github.com/rafaelfiume/tictactoe).
+A simple Tic-Tac-Toe console game implemented with Erlang. 
+
+* A Kotlin version is available [here](https://github.com/rafaelfiume/tictactoe).
 
 Heavilly inspered on [Erlang With Fred Hebert](https://howistart.org/posts/erlang/1) to deal with input/output, including how to mock and capture input/output in common tests, among other things. 
 
@@ -100,15 +102,12 @@ or just:
 
 # TODO List
 
+### ~~Playing TicTacToe using a terminal (Parent Story)~~
 * ~~Board creation~~
-* ~~Player wins with vertical line~~
-* ~~Player wins with horizontal line~~
-* ~~Player wins with diagonal line~~
+* ~~Player X wins with vertical line~~
+* ~~Player O wins with horizontal line~~
+* ~~Player X wins with diagonal line~~
 * ~~Game ends with a draw~~
 * Play the game in BOT mode
-* ~~Validate user input~~
-* Implement GUI
-* Play against computer AI
-* Play online against remote opponent
-* App runs with a double click
-* Provide an installer for the app
+* ~~Validate player input (player selects an already marked cell in the board)~~
+* ~~Validate player input (player selects unknown position)~~

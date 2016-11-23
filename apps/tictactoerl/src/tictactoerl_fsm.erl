@@ -72,27 +72,31 @@ play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = 
 
     CurrentState = State#state{board = CurrentBoard},
 
-    case board:has_winner(CurrentBoard) of
-        game_on -> draw(CurrentState);
-        game_over -> won(CurrentPlayer, CurrentState)
-    end;
+    do_if_has_winner_or_else(CurrentBoard, 
+                             fun() -> won(CurrentPlayer, CurrentState) end,
+                             fun() -> draw(CurrentState) end);
 play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = Turn}) ->
     {FreePosition, CurrentBoard} = board:mark_position_if_available(PreviousBoard, Position, CurrentPlayer),
 
     CurrentState = State#state{board = CurrentBoard},
 
-    {PlayerTurn, MaybePlayerWinner} = case CurrentPlayer of
+    {NextPlayerTurn, CurrentPlayerTurn} = case CurrentPlayer of
         "X" -> {player_o_turn, player_x_turn};
         "O" -> {player_x_turn, player_o_turn}
     end,
     case FreePosition of
         true ->
-            case board:has_winner(CurrentBoard) of
-                game_on -> next_turn(PlayerTurn, CurrentState#state{turn = Turn + 1});
-                game_over -> won(CurrentPlayer, CurrentState)
-            end;
+            do_if_has_winner_or_else(CurrentBoard, 
+                                     fun() -> won(CurrentPlayer, CurrentState) end,
+                                     fun() -> next_turn(NextPlayerTurn, CurrentState#state{turn = Turn + 1}) end);
         false ->
-            next_turn(MaybePlayerWinner, CurrentState)
+            next_turn(CurrentPlayerTurn, CurrentState)
+    end.
+
+do_if_has_winner_or_else(Board, HasWinner, GameIsStillOn) ->
+    case board:has_winner(Board) of
+        game_over -> HasWinner();
+        game_on -> GameIsStillOn()
     end.
 
 next_turn(PlayerTurn, State) ->
