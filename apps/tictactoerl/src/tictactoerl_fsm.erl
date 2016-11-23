@@ -80,17 +80,13 @@ play_turn(CurrentPlayer, Position, State = #state{board = PreviousBoard, turn = 
 
     CurrentState = State#state{board = CurrentBoard},
 
-    {NextPlayerTurn, CurrentPlayerTurn} = case CurrentPlayer of
-        "X" -> {player_o_turn, player_x_turn};
-        "O" -> {player_x_turn, player_o_turn}
-    end,
     case FreePosition of
         true ->
             do_if_has_winner_or_else(CurrentBoard, 
                                      fun() -> won(CurrentPlayer, CurrentState) end,
-                                     fun() -> next_turn(NextPlayerTurn, CurrentState#state{turn = Turn + 1}) end);
+                                     fun() -> change_turn(CurrentPlayer, CurrentState#state{turn = Turn + 1}) end);
         false ->
-            next_turn(CurrentPlayerTurn, CurrentState)
+            replay_turn(CurrentPlayer, CurrentState)
     end.
 
 do_if_has_winner_or_else(Board, HasWinner, GameIsStillOn) ->
@@ -99,12 +95,22 @@ do_if_has_winner_or_else(Board, HasWinner, GameIsStillOn) ->
         game_on -> GameIsStillOn()
     end.
 
-next_turn(PlayerTurn, State) ->
-    Player = case PlayerTurn of
-        player_o_turn -> "O";
-        player_x_turn -> "X"
+change_turn(CurrentPlayer, State) ->
+    {NextPlayer, NextFsmState} = case CurrentPlayer of
+        "X" -> {"O", player_o_turn};
+        "O" -> {"X", player_x_turn}
     end,
-    {next_state, PlayerTurn, prompt(State#state{desc = "\nPlayer "++Player++":\n", status = "Choose position: "})}.
+    next_turn(NextPlayer, NextFsmState, State).
+
+replay_turn(CurrentPlayer, State) ->
+     NextFsmState = case CurrentPlayer of
+        "X" -> player_x_turn;
+        "O" -> player_o_turn
+    end,
+    next_turn(CurrentPlayer, NextFsmState, State).
+
+next_turn(Player, FsmState, State) ->
+    {next_state, FsmState, prompt(State#state{desc = "\nPlayer "++Player++":\n", status = "Choose position: "})}.
 
 won(Player, State) ->
     {next_state, game_ends, prompt(State#state{desc = "\nPlayer "++Player++":\n", status = "PLAYER "++Player++" WON!"})}.
