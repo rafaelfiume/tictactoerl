@@ -19,6 +19,7 @@ all() ->
 
 init_per_testcase(_, Config) ->
     mock_io(),
+    application:set_env(tictactoerl, botmode, off),
     {ok, Pid} = tictactoerl_fsm:start_link(),
     [{pid, Pid} | Config].
 
@@ -58,7 +59,7 @@ wait_for_death(Pid) ->
 %%% TEST CASES %%%
 %%%%%%%%%%%%%%%%%%
 
-board_created(_Config) ->
+board_created() ->
     out("Game Board Creation...\n"),
     out("   |   |   \n"
         "---+---+---\n"
@@ -72,8 +73,8 @@ board_created(_Config) ->
 %%%  TEST CASES  - WINNING \O/  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-player_wins_with__vertical__line(Config) ->
-    board_created(Config),
+player_wins_with__vertical__line(_Config) ->
+    board_created(),
     in("1"),
 
     out("\nPlayer O:\n"),
@@ -124,8 +125,8 @@ player_wins_with__vertical__line(Config) ->
         " X | O |   \n"),
     out("PLAYER O WON!").
 
-player_wins_with__horizontal__line(Config) ->
-    board_created(Config),
+player_wins_with__horizontal__line(_Config) ->
+    board_created(),
     in("1"),
 
     out("\nPlayer O:\n"),
@@ -168,8 +169,8 @@ player_wins_with__horizontal__line(Config) ->
         "   |   |   \n"),
     out("PLAYER X WON!").
 
-player_wins_with__diagonal__line(Config) ->
-    board_created(Config),
+player_wins_with__diagonal__line(_Config) ->
+    board_created(),
     in("1"),
 
     out("\nPlayer O:\n"),
@@ -216,8 +217,8 @@ player_wins_with__diagonal__line(Config) ->
 %%%   DRAW oO   %%%
 %%%%%%%%%%%%%%%%%%%
 
-game_ends_with_a_draw_when_players_cant_get_three_in_a_row(Config) ->
-    board_created(Config),
+game_ends_with_a_draw_when_players_cant_get_three_in_a_row(_Config) ->
+    board_created(),
     in("1"),
 
     out("\nPlayer O:\n"),
@@ -296,8 +297,8 @@ game_ends_with_a_draw_when_players_cant_get_three_in_a_row(Config) ->
 %%%   TEST CASES  - SAD PATH    %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-player_has_to_select_a__free__position_in_the_board(Config) ->
-    board_created(Config),
+player_has_to_select_a__free__position_in_the_board(_Config) ->
+    board_created(),
     in("1"),
 
     out("\nPlayer O:\n"),
@@ -332,8 +333,8 @@ player_has_to_select_a__free__position_in_the_board(Config) ->
         "   |   |   \n"),
     out("Choose position: ").
 
-player_has_to_select_a__valid__position_in_the_board(Config) ->
-    board_created(Config),
+player_has_to_select_a__valid__position_in_the_board(_Config) ->
+    board_created(),
     in("w"),
 
     out("\nPlayer X:\n"),

@@ -28,6 +28,7 @@ Other useful commands are:
 
     λ → rebar3 compile
     λ → rebar3 ct
+    λ → rebar3 eunit [--module=console_input_reader_test]
     λ → rebar3 dialyzer
 
 

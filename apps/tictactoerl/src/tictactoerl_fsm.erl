@@ -134,5 +134,10 @@ output(State = #state{desc = Desc, board = Board, status = Status}) ->
 
 get_input() ->
     Parent = self(),
-    spawn_link(fun() -> console_input_reader:read_user_input(Parent) end).
+    % Default to OFF
+    InputFunction = case application:get_env(tictactoerl, botmode) of
+        {ok, on} -> fun() -> bot_console_input_reader:read_user_input(Parent) end;
+        _ -> fun() -> console_input_reader:read_user_input(Parent) end
+    end,
+    spawn_link(InputFunction).
 
