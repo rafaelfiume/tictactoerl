@@ -30,9 +30,9 @@ end_per_testcase(_, Config) ->
     wait_for_death(Pid).
 
 mock_io() ->
-    Parent = self(),
     code:unstick_dir(filename:dirname(code:where_is_file("io.beam"))),
     meck:new(io, [passthrough, no_link]),
+    Parent = self(),
     meck:expect(io, format, fun(Str) ->
         Parent ! {out, Str},
         ok

@@ -120,7 +120,7 @@ draw(State) ->
 
 prompt(State = #state{pid = undefined}) ->
     output(State),
-    State#state{pid=get_input()};
+    State#state{pid = get_input()};
 prompt(State = #state{pid = Pid}) when is_pid(Pid) ->
     unlink(Pid),
     exit(Pid, kill),
@@ -134,7 +134,5 @@ output(State = #state{desc = Desc, board = Board, status = Status}) ->
 
 get_input() ->
     Parent = self(),
-    spawn_link(fun() ->
-        Position = board_position:user_input(io:get_line("")),
-        gen_fsm:send_event(Parent, Position)
-    end).
+    spawn_link(fun() -> console_input_reader:read_user_input(Parent) end).
+

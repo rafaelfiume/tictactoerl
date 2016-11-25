@@ -3,7 +3,7 @@
 
 -include("../src/board_table.hrl").
 
-print_board_test() ->
+prints_board_test() ->
     Board = #board_table{top_left = "X", center = "O", bottom_center ="X"},
 
     PrintedBoard = board:to_string(Board),
