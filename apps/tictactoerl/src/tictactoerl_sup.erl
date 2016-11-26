@@ -11,7 +11,6 @@ start_link() ->
 
 %% Child :: {Id,StartFunc,Restart,Shutdown,Type,Modules}
 init([]) ->
-    io:format("tictactoe_sup:init~n"),
     {ok, {{one_for_one, 1, 5},
           [{console,
             {tictactoerl_fsm, start_link, []},

@@ -24,6 +24,7 @@ start_link() ->
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 init([]) ->
+    random_positions:new(),
     {ok, board_created, start()}.
 
 handle_event(_Event, StateName, State) ->
@@ -39,6 +40,7 @@ code_change(_OldVsn, StateName, State, _Extra) ->
     {ok, StateName, State}.
 
 terminate(_Reason, _StateName, _State) ->
+    random_positions:terminate(),
     ok.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,7 +66,6 @@ game_ends(_Msg, S) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 start() ->
-    random_positions:new(),
     gen_fsm:send_event(self(), game_on),
     #state{}.
 

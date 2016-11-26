@@ -1,13 +1,16 @@
 -module(random_positions).
 
--export([new/0, next/0, next/1]).
+-export([new/0, terminate/0, next/0, next/1]).
 
 new() ->
     Pid = spawn_link(fun() -> loop([]) end),
-    register(random_positions_gen, Pid).
+    register(?MODULE, Pid).
+
+terminate() ->
+    ?MODULE ! shutdown.
 
 next() ->
-    random_positions_gen ! {next_number, self()},
+    ?MODULE ! {next_number, self()},
     receive V -> V end.
 
 % This will loop forever if ListOfNumbers has 9 numbers or more.
@@ -26,5 +29,3 @@ loop(ListOfNumbers) ->
             From ! RandomNumber,
             loop([RandomNumber|ListOfNumbers])
     end.
-
-% TODO : 26/11/2016 : Missing shutdown

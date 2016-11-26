@@ -59,10 +59,9 @@ computer_does_all_the_playing_when_tictactoe_is_in_bot_mode(_Config) ->
 game_ends_with(Expected1, Expected2, Expected3) ->
     receive
         {out, Prompt} ->
-            %ct:pal("Expected:~n~s~nPrompt:~n~s", [Expected, Prompt]),
             ct:pal("Prompt is: ~n~s~n", [Prompt]),
             case string:equal(Expected1, Prompt) orelse string:equal(Expected2, Prompt) orelse string:equal(Expected3, Prompt) of
-                true -> ct:pal("trying again........");
+                true -> ct:pal("Test completed!");
                 false -> game_ends_with(Expected1, Expected2, Expected3)
             end
 
