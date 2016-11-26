@@ -31,6 +31,10 @@ Other useful commands are:
     λ → rebar3 eunit [--module=console_input_reader_test]
     λ → rebar3 dialyzer
 
+### BOT Mode
+
+To play TicTacToe[rlang] in Bot Mode, change the "botmode" env var from `off` to `on`.
+
 
 # [Vagrant](#vagrant)
 
@@ -109,6 +113,6 @@ or just:
 * ~~Player O wins with horizontal line~~
 * ~~Player X wins with diagonal line~~
 * ~~Game ends with a draw~~
-* Play the game in BOT mode
+* ~~Play the game in BOT mode~~
 * ~~Validate player input (player selects an already marked cell in the board)~~
 * ~~Validate player input (player selects unknown position)~~

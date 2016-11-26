@@ -1,15 +1,16 @@
--module(bot_mode_tictactoe_SUITE).
+-module(tictactoe_in_botmode_SUITE).
 -include_lib("common_test/include/ct.hrl").
 -compile(export_all).
 
 all() ->
     [
-     %computer_does_all_the_playing_when_tictactoe_is_in_bot_mode
+     computer_does_all_the_playing_when_tictactoe_is_in_bot_mode
     ].
 
 init_per_testcase(_, Config) ->
     mock_io(),
-    application:set_env(tictactoerl, botmode, on),
+    application:set_env(tictactoerl, botmode, on), %% BOTMODE ON!! %%
+    application:set_env(tictactoerl, turn_duration_in_seconds, 0),
     {ok, Pid} = tictactoerl_fsm:start_link(),
     [{pid, Pid} | Config].
 
@@ -46,10 +47,9 @@ wait_for_death(Pid) ->
 %%%%%%%%%%%%%%%%%%
 
 computer_does_all_the_playing_when_tictactoe_is_in_bot_mode(_Config) ->
-    %% given app is up and running
+    %% given app is up and running with botmode on 
 
-    %% then(theGameStatus(), anyOf(status("PLAYER X WON!"), status("PLAYER O WON!"), orStatus("GAME ENDS WITH A DRAW!")));
-    game_ends_with("PLAYER X WON!", "PLAYER O WON!", "GAME ENDS WITH A DRAW!").
+    game_ends_with(either("PLAYER X WON!"), orr("PLAYER O WON!"), orr("GAME ENDS WITH A DRAW!")).
 
 %%%%%%%%%%%%%%%
 %%% HELPERS %%%
@@ -60,7 +60,7 @@ game_ends_with(Expected1, Expected2, Expected3) ->
     receive
         {out, Prompt} ->
             %ct:pal("Expected:~n~s~nPrompt:~n~s", [Expected, Prompt]),
-            ct:pal("Prompt is: ~s~n", [Prompt]),
+            ct:pal("Prompt is: ~n~s~n", [Prompt]),
             case string:equal(Expected1, Prompt) orelse string:equal(Expected2, Prompt) orelse string:equal(Expected3, Prompt) of
                 true -> ct:pal("trying again........");
                 false -> game_ends_with(Expected1, Expected2, Expected3)
@@ -70,3 +70,7 @@ game_ends_with(Expected1, Expected2, Expected3) ->
         ct:pal("MBOX: ~p", [process_info(self(), messages)]),
         error({too_long, {out, Expected1, Expected2, Expected3}})
     end.
+
+either(Stuff) -> Stuff.
+
+orr(Stuff) -> Stuff.

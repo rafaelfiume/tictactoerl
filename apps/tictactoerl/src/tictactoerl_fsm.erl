@@ -64,6 +64,7 @@ game_ends(_Msg, S) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 start() ->
+    random_positions:new(),
     gen_fsm:send_event(self(), game_on),
     #state{}.
 
@@ -134,7 +135,7 @@ output(State = #state{desc = Desc, board = Board, status = Status}) ->
 
 get_input() ->
     Parent = self(),
-    % Default to OFF
+    % TODO : 26/11/2016 : Move the logic to get the rigth input_reader to another module?
     InputFunction = case application:get_env(tictactoerl, botmode) of
         {ok, on} -> fun() -> bot_console_input_reader:read_user_input(Parent) end;
         _ -> fun() -> console_input_reader:read_user_input(Parent) end

@@ -3,5 +3,11 @@
 -export([read_user_input/1]).
 
 read_user_input(Parent) ->
-    Position = board_position:user_input("4"),
+    wait_for_your_time_to_play(),
+
+    Position = random_positions:next(),
     event_sender:send_event(Parent, Position).
+
+wait_for_your_time_to_play() ->
+    {ok, TurnDuration} = application:get_env(tictactoerl, turn_duration_in_seconds),
+    timer:sleep(TurnDuration * 1000).
