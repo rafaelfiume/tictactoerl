@@ -2,10 +2,10 @@
 -include_lib("eunit/include/eunit.hrl").
 
 receives_a_random_number_from_one_to_nine_test() ->
-    Pid = random_positions:new(),
+    random_positions:new(),
 
-    FirstResult = random_positions:next(Pid),
-    SecondResult = random_positions:next(Pid),
+    FirstResult = random_positions:next(),
+    SecondResult = random_positions:next(),
 
     ?assert(1 =< FirstResult),  ?assert(FirstResult =< 9),
     ?assert(1 =< SecondResult), ?assert(SecondResult =< 9),
