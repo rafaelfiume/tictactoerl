@@ -1,17 +1,47 @@
 -module(random_positions).
+-behaviour(gen_server).
 
--export([new/0, terminate/0, next/0, next/1]).
+% required by gen_server
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
+% api
+-export([new/0, next/0, next/1]).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% GEN_SERVER CALLBACKS %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+init([]) ->
+  {ok, []}.
+
+handle_cast(_Msg, N) ->
+  {noreply, N}.
+
+handle_info(_Msg, N) ->
+  {noreply, N}.
+
+code_change(_OldVsn, N, _Other) ->
+  {ok, N}.
+
+terminate(_Reason, _N) ->
+  ok.
+
+handle_call(next_number, _From, ListOfNumbers) ->
+  RandomNumber = next(ListOfNumbers),
+  {reply, RandomNumber, [RandomNumber|ListOfNumbers]}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%        API        %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
 
 new() ->
-    Pid = spawn_link(fun() -> loop([]) end),
-    register(?MODULE, Pid).
-
-terminate() ->
-    ?MODULE ! shutdown.
+  gen_server:start({local, ?MODULE}, ?MODULE, [], []).
 
 next() ->
-    ?MODULE ! {next_number, self()},
-    receive V -> V end.
+  gen_server:call(?MODULE, next_number).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%     INTERNALS     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % This will loop forever if ListOfNumbers has 9 numbers or more.
 % Trusting the client this is not going to happen
@@ -22,10 +52,3 @@ next(ListOfNumbers) when is_list(ListOfNumbers) ->
         false -> next(ListOfNumbers)
     end.
 
-loop(ListOfNumbers) ->
-    receive
-        {next_number, From} ->
-            RandomNumber = next(ListOfNumbers),
-            From ! RandomNumber,
-            loop([RandomNumber|ListOfNumbers])
-    end.
