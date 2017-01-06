@@ -8,11 +8,12 @@
          board_created/2, player_x_turn/2, player_o_turn/2, game_ends/2]).
 
 -include("board.hrl").
--record(state, {desc = "",
-                board = #board{},
-                status = "",
-                turn = 1,
-                pid}).
+
+-record(state, {desc             :: string(),
+                board = #board{} :: board(),
+                status           :: string(),
+                turn = 1         :: 1..9,
+                pid              :: pid()}).
 
 -define(MAX_TURNS, 9).
 

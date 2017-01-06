@@ -51,4 +51,3 @@ next(ListOfNumbers) when is_list(ListOfNumbers) ->
         true -> Number;
         false -> next(ListOfNumbers)
     end.
-
