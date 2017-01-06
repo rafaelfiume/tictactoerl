@@ -7,9 +7,9 @@
          %% async events
          board_created/2, player_x_turn/2, player_o_turn/2, game_ends/2]).
 
--include("board_table.hrl").
+-include("board.hrl").
 -record(state, {desc = "",
-                board = #board_table{},
+                board = #board{},
                 status = "",
                 turn = 1,
                 pid}).
