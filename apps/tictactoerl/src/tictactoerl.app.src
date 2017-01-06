@@ -4,6 +4,7 @@
     {registered, []},
     {mod, { tictactoerl_app, []}},
     {applications, [kernel, stdlib]},
+    %{env,[{botmode, on}, {turn_duration_in_seconds, 2}]},
     {env,[{botmode, off}, {turn_duration_in_seconds, 2}]},
     {modules, []},
     {maintainers, []},
