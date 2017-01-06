@@ -4,7 +4,8 @@
 
 all() ->
     [
-     computer_does_all_the_playing_when_tictactoe_is_in_bot_mode
+     %% TODO RF : 06/01/2017 : Disabled for being too flaky - Fix it
+     %% computer_does_all_the_playing_when_tictactoe_is_in_bot_mode
     ].
 
 init_per_testcase(_, Config) ->
