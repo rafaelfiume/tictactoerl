@@ -22,7 +22,7 @@ test:
     - rebar3 eunit
     # run acceptance tests
     - rebar3 ct
-    ##- rebar3 dialyzer##
+    - rebar3 dialyzer
     # generates artifact
     - rebar3 release
     # copy the build outputs to artifacts
