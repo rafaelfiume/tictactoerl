@@ -22,7 +22,7 @@ test:
     - rebar3 eunit
     # run acceptance tests
     - rebar3 ct
-    - rebar3 dialyzer
+    ## - rebar3 dialyzer TODO RF : 07/01/2017 : Circle CI fails due to "Could not find application: erts"
     # generates artifact
     - rebar3 release
     # copy the build outputs to artifacts
