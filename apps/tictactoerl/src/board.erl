@@ -4,9 +4,15 @@
 
 -include("board.hrl").
 
+-type player()   :: string(). %% TODO replace this by x | o
+-type position() :: 1..9.
+
+-export_type([position/0]).
+
+-spec to_string(board:board()) -> string().
 to_string(#board{top_left = Tl   , top_center = Tc   , top_right = Tr,
-                       mid_left = Ml   , center = Ce       , mid_right = Mr,
-                       bottom_left = Bl, bottom_center = Bc, bottom_right = Br}) ->
+                 mid_left = Ml   , center = Ce       , mid_right = Mr,
+                 bottom_left = Bl, bottom_center = Bc, bottom_right = Br}) ->
     lists:flatten(io_lib:format(
                   " ~s | ~s | ~s \n"
                   "---+---+---\n"
@@ -16,12 +22,14 @@ to_string(#board{top_left = Tl   , top_center = Tc   , top_right = Tr,
                                        Ml, Ce, Mr,
                                        Bl, Bc, Br])).
 
+-spec has_winner(board:board()) -> game_on | game_over.
 has_winner(B) -> 
     case has_vertical_winner(B) orelse has_horizontal_winner(B) orelse has_diagonal_winner(B) of
         true  -> game_over;
         false -> game_on
     end.
 
+-spec mark_position_if_available(board:board(), position(), player()) -> {boolean(), board()}.
 mark_position_if_available(B, 1, Player) -> 
     case cell_is_free_at(B#board.top_left) of
         free -> {true, B#board{top_left = Player}};

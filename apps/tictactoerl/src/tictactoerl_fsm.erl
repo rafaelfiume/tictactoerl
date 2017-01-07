@@ -9,10 +9,12 @@
 
 -include("board.hrl").
 
+-type turn()     :: 1..9.
+
 -record(state, {desc             :: string(),
-                board = #board{} :: board(),
+                board = #board{} :: board:board(),
                 status           :: string(),
-                turn = 1         :: 1..9,
+                turn = 1         :: turn(),
                 pid              :: pid()}).
 
 -define(MAX_TURNS, 9).

@@ -2,6 +2,7 @@
 
 -export([user_input/1]).
 
+-spec user_input(string() | binary()) -> board:position() | 'unknown_position'.
 user_input(Input) when is_list(Input) -> user_input(iolist_to_binary(Input));
 user_input(Input) when is_binary(Input) ->
     case re:run(Input, "^([1-9])$", [{capture, [1], list}]) of

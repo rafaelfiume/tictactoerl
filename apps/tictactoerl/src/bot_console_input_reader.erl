@@ -2,6 +2,7 @@
 
 -export([read_user_input/1]).
 
+-spec read_user_input(pid()) -> 'ok'.
 read_user_input(Parent) ->
     wait_for_your_time_to_play(),
 

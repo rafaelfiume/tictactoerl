@@ -5,3 +5,5 @@
                 bottom_left = ?NO_SELECTION :: string(), bottom_center = ?NO_SELECTION :: string(), bottom_right = ?NO_SELECTION :: string()}).
 
 -type board() :: #board{}.
+
+-export_type([board/0]).

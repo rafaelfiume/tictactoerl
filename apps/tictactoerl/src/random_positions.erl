@@ -33,9 +33,11 @@ handle_call(next_number, _From, ListOfNumbers) ->
 %%%        API        %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
+-spec new() -> 'ignore' | {'error', _} | {'ok', pid()}.
 new() ->
   gen_server:start({local, ?MODULE}, ?MODULE, [], []).
 
+-spec next() -> board:position().
 next() ->
   gen_server:call(?MODULE, next_number).
 
