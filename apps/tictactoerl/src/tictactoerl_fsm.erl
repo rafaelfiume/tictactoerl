@@ -43,6 +43,7 @@ code_change(_OldVsn, StateName, State, _Extra) ->
     {ok, StateName, State}.
 
 terminate(_Reason, _StateName, _State) ->
+    init:stop(),
     ok.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
