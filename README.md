@@ -103,16 +103,3 @@ If you are having problems compiling or executing the tests after rebasing chang
 or just:
 
      λ →  rm -r _build/
-
-
-# TODO List
-
-### ~~Playing TicTacToe using a terminal (Parent Story)~~
-* ~~Board creation~~
-* ~~Player X wins with vertical line~~
-* ~~Player O wins with horizontal line~~
-* ~~Player X wins with diagonal line~~
-* ~~Game ends with a draw~~
-* ~~Play the game in BOT mode~~
-* ~~Validate player input (player selects an already marked cell in the board)~~
-* ~~Validate player input (player selects unknown position)~~
